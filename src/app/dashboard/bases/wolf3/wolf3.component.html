@@ -1,0 +1,65 @@
+<div style="margin-top:-20px;" class="pull-center">
+  <table
+    class="myTab"
+    width="100%"
+    style="border: thin solid #333; border-radius:10px;"
+  >
+    <thead>
+      <tr>
+        <th>Msn | Tgt</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Hide</th>
+        <th>Show</th>
+        <th>Del</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rowData of attkList">
+        <!-- <td>{{ rowData.BaseId }}</td> 
+          launchAttk(rowData.attkId)-->
+        <td>{{ rowData.TgtName }}</td>
+        <td>
+          <mat-radio-button
+            color="accent"
+            value="wolf2"
+            name="wolf2"
+            (click)="launchAttk(rowData.attkId)"
+          ></mat-radio-button>
+        </td>
+        <td>
+          <mat-radio-button
+            color="accent"
+            value="wolf2"
+            name="wolf2"
+            (click)="stopTimer()"
+          ></mat-radio-button>
+        </td>
+        <td>
+          <mat-radio-button
+            value="2"
+            name="{{ 'sh' + rowData.BaseId + rowData.Ser }}"
+            (click)="isVisibleAircraft(0)"
+          ></mat-radio-button>
+        </td>
+        <td>
+          <mat-radio-button
+            value="3"
+            name="{{ 'sh' + rowData.BaseId + rowData.Ser }}"
+            (click)="isVisibleAircraft(1)"
+          ></mat-radio-button>
+        </td>
+        <td valign="top">
+          <button
+            type="button"
+            style="background: transparent; border:none"
+            name="remove"
+            (click)="remove(rowData.attkId)"
+          >
+            <i class="fa fa-trash-o" id="trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

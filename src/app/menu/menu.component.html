@@ -1,0 +1,46 @@
+<div style="margin-left: 10px;">
+  <table width="100%">
+    <tr class="compact">
+      <td class="menuSubTitle pull-left">
+        <div class="pull-center">
+          <a><i class="fa fa-user-plus" style="font-size:20px; "></i></a>
+        </div>
+        <div>
+          <table>
+            <tr>
+              <td>
+                <a style="text-transform: capitalize;">{{ userId }}</a>
+              </td>
+              <td style="padding-left: 5px; padding-right:5px;"><a>|</a></td>
+
+              <td *ngIf="authService.isLoggedIn()" class="pull-right">
+                <a
+                  (click)="authService.logout()"
+                  style="text-decoration: none; cursor:pointer;"
+                  title="Logout"
+                  >Logout</a
+                >
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+
+      <td class="menuSubTitle pull-right" *ngFor="let data of arrMenu">
+        <div class="pull-center">
+          <a routerLink="{{ data.routerLink }}" title="{{ data.menuName }}">
+            <i class="fa fa-{{ data.iconName }}" style="font-size:20px;"></i>
+          </a>
+        </div>
+        <div style="padding-left:6px; padding-right:6px;">
+          <a
+            routerLink="{{ data.routerLink }}"
+            title="{{ data.menuName }}"
+            style="text-decoration: none;"
+            >{{ data.menuName }}</a
+          >
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

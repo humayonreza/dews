@@ -1,0 +1,199 @@
+<div class="row col-xs-12">
+  <div class="col-xs-4 panel-container">
+    <div class="panel-inner">
+      <div class="menu-border-bottom"><app-menu></app-menu></div>
+      <div class="txt-header" style="margin-top:10px;">
+        <table width="100%">
+          <tr>
+            <td class="pull-left" style="margin-left:8px;">
+              <table>
+                <tr>
+                  <td>
+                    <i
+                      class="fa fa-dot-circle-o"
+                      style="font-size:18px; padding-right:8px;"
+                    ></i>
+                  </td>
+                  <td style="width:2px;"></td>
+                  <td>Control Order</td>
+                </tr>
+              </table>
+            </td>
+            <td class="pull-right">
+              <table width="100%">
+                <tr>
+                  <td>Reset</td>
+
+                  <td style="width:8px;"></td>
+                  <td>
+                    <i
+                      class="fa fa-history"
+                      style="font-size:18px; padding-right:10px; cursor:pointer;"
+                      (click)="reset_flightdata()"
+                    ></i>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="pull-center">
+        <table width="100%" class="myTab">
+          <tr>
+            <th>Readiness</th>
+            <th>Con Order</th>
+            <th>Man State</th>
+            <th>Time</th>
+          </tr>
+          <tr>
+            <td>{{ readiness }}</td>
+            <td>{{ gco }}</td>
+            <td>{{ manningState }}</td>
+            <td>{{ coTime }}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="pull-center" style="margin-top:10px;">
+        <div class="txt-header">
+          <table width="100%">
+            <tr>
+              <td class="pull-left" style="margin-left:8px;">
+                <table>
+                  <tr>
+                    <td>
+                      <i
+                        class="fa fa-dot-circle-o"
+                        style="font-size:18px; padding-right:8px;"
+                      ></i>
+                    </td>
+                    <td style="width:2px;"></td>
+                    <td>Flight Data</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <table width="100%" class="myTab">
+            <tr>
+              <th>Flight<br /><span class="txt10">(Id)</span></th>
+              <th>Dist<br /><span class="txt10">(KMs)</span></th>
+              <th>Brg<br /><span class="txt10">(Deg)</span></th>
+              <th>Total<br /><span class="txt10">(Ac)</span></th>
+              <th>Ht<br /><span class="txt10">(M)</span></th>
+              <th>Spd<br /><span class="txt10">(Mach)</span></th>
+              <th>Head<br /><span class="txt10">(Deg)</span></th>
+              <th>Spkr</th>
+            </tr>
+            <tr *ngFor="let data of flightData">
+              <td>{{ data.tagId }}</td>
+              <td>{{ data.dist }}</td>
+              <td>{{ data.brg }}</td>
+              <td>{{ data.totalAirCraft }}</td>
+              <td>{{ data.height * 1000 }}</td>
+              <td>{{ data.speed }}</td>
+              <td>{{ data.heading }}</td>
+              <td>
+                <i
+                  class="{{ data.iconSpkr }}"
+                  (click)="ttsSvc(data.acId)"
+                  style="cursor: pointer;"
+                ></i>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- <div class="row pull-center" style="margin-top:10px;">
+        <button class="btn btn-default btn-xs" (click)="reset_flightdata()">
+          Reset
+        </button>
+      </div> -->
+    </div>
+  </div>
+  <div class="col-xs-8 map-container">
+    <agm-map
+      [latitude]="latCen"
+      [longitude]="lngCen"
+      [zoom]="zoom"
+      [styles]="mapThemeDayMode"
+      draggableCursor="default"
+      (zoomChange)="zoomChange($event)"
+    >
+      <agm-circle
+        *ngFor="let layout of arrElementData"
+        [latitude]="layout.lat"
+        [longitude]="layout.lng"
+        [circleDraggable]="false"
+        [editable]="false"
+        [fillColor]="
+          layout.origin == 1 ? 'blue' : layout.origin == 2 ? '#f00' : '#ff0'
+        "
+        [fillOpacity]="layout.origin == 1 ? 0.3 : 0.2"
+        [radius]="layout.rad"
+        [strokeOpacity]="layout.origin == 1 ? 0.8 : 0.8"
+        [strokePosition]="0"
+        [strokeWeight]="layout.origin == 1 ? 0.7 : 0.7"
+        [strokeColor]="
+          layout.origin == 1 ? '#777' : layout.origin == 2 ? '#777' : '#777'
+        "
+        [clickable]="true"
+      >
+      </agm-circle>
+      <agm-marker
+        *ngFor="let data of arrElementLabel"
+        [latitude]="data.lat"
+        [longitude]="data.lng"
+        [visible]="true"
+        [label]="{
+          color: '#666',
+          fontSize: '8px',
+          text: data.elementName
+        }"
+        [iconUrl]="{
+          scale: 0,
+          fillColor: '#FF6347',
+          labelOrigin: { x: 60, y: -70 },
+          path: 'M0 0 L0 0 L0 0 Z'
+        }"
+      ></agm-marker>
+      <agm-marker
+        *ngFor="let data of flightData"
+        [latitude]="data.lat"
+        [longitude]="data.lng"
+        [visible]="true"
+        [label]=""
+        [iconUrl]="{
+          rotation: data.rotate,
+          scale: 0.1,
+          fillColor: data.orig == 1 ? '#0ff' : '#f00',
+          fillOpacity: 0.7,
+          strokeColor: data.orig == 1 ? '#0ff' : '#f00',
+          path:
+            'm 67.5665,6.56557 C66.4759,8.38715,63.3292,21.0899,64.0991,26.3793 C64.1828,30.6834,64.4118,45.1918,64.4118,45.1918 L44.7542,62.1714 C44.7542,62.1714,45.2101,56.1317,44.7542,51.1176 C44.1275,51.1176,42.1902,51.1176,41.2216,51.1176 C40.4758,55.7739,41.1646,65.1343,41.1646,65.1343 L25.4386,77.5467 C25.4386,77.5467,25.7234,70.7181,24.849,66.4256 C22.9315,66.5017,21.9121,66.504,21.6768,66.4256 C20.8262,71.3132,21.6768,80.3836,21.6768,80.3836 L4.0081,93.0085 L4.79091,102.736 C4.79091,102.736,58.3797,77.674,61.1509,76.3486 C63.8017,75.204,64.441,78.4232,64.441,78.4232 C64.441,78.4232,52.7145,81.0448,51.9715,95.5867 C51.7372,104.212,60.3746,112.947,65.2557,112.927 C65.1511,113.053,66.3626,124.604,67.5674,128.159 C65.7601,129.605,52.3404,139.831,52.3404,139.831 L52.4609,144.41 L69.8419,139.424 L70.6583,143.195 L71.8142,139.485 L89.615,144.184 L89.5796,139.441 C89.5796,139.441,75.7038,129.425,73.7759,128.039 C75.5833,120.991,75.4806,112.874,75.7157,112.65 C78.3715,111.906,88.0515,107.701,88.0515,95 C87.5473,82.0238,75.7054,78.174,75.7054,78.174 C75.7054,78.174,76.3296,75.5153,79.1114,75.903 C82.1638,77.1146,135.92,101.088,135.92,101.088 L135.863,91.6292 L118.541,79.4928 C118.541,79.4928,118.974,70.2104,118.199,65.4191 C117.573,65.5901,115.92,65.5331,114.895,65.4761 C114.268,70.1484,114.61,76.5869,114.61,76.5869 L98.8837,64.7354 C98.8837,64.7354,99.2826,53.4537,98.4849,50.5478 C97.5732,50.6617,96.0348,50.6048,95.2371,50.5478 C94.3824,55.106,95.0662,61.5446,95.0662,61.5446 L75.2947,44.9639 C75.2947,44.9639,75.0803,30.8039,75.1138,26.1349 C75.1472,21.466,72.6757,9.74535,71.1577,6.44173 C70.0974,3.65454,68.0014,3.93943,67.5665,6.56557 z'
+        }"
+        ><agm-info-window>{{ data.tagId }}</agm-info-window>
+      </agm-marker>
+      <agm-marker
+        name="opList"
+        id="opList"
+        *ngFor="let layout of opList"
+        [latitude]="layout.opLat"
+        [longitude]="layout.opLng"
+        [label]="{
+          color: '#fff',
+          fontSize: '9px',
+          text: layout.secElementId
+        }"
+        [iconUrl]="{
+          url: '',
+          scaledSize: { height: 0, width: 0 }
+        }"
+        [visible]="isOPVisible ? true : false"
+      ></agm-marker>
+      <!-- secElementId: "Z", opLat: "26.17890438", opLng: -->
+    </agm-map>
+  </div>
+</div>

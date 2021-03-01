@@ -1,0 +1,55 @@
+<div
+  class="row col-md-offset-4 col-md-4 mat-elevation-z8 login-holder"
+  style="padding: 30px; margin-top: 60px; border-radius: 5px; background-color: #eee;"
+>
+  <form class="form-signin" #f="ngForm" (ngSubmit)="signIn(f.value)">
+    <!-- <mat-card>Simple card</mat-card> -->
+    <div class="pull-center">
+      <div>
+        <i
+          class="fa fa-universal-access"
+          style="font-size:48px;color: #999;"
+        ></i>
+      </div>
+      <div style="font-size:10px;color: #999;">Secure Login</div>
+    </div>
+    <div *ngIf="invalidLogin" class="alert alert-danger">
+      Invalid username and/or password.
+    </div>
+
+    <div class="input-group" style="margin-top: 20px;">
+      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+      <input
+        type="text"
+        id="userId"
+        name="userId"
+        ngModel
+        class="form-control"
+        placeholder="User Name"
+        required
+        autofocus
+      />
+    </div>
+    <div class="input-group" style="margin-top:3px;">
+      <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+      <input
+        type="password"
+        id="inputPassword"
+        name="userPassword"
+        ngModel
+        class="form-control"
+        placeholder="Password"
+        required
+      />
+    </div>
+    <!-- </div> -->
+
+    <button
+      class="btn btn-default btn-md"
+      type="submit"
+      style="margin-top:10px;"
+    >
+      Sign in
+    </button>
+  </form>
+</div>

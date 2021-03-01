@@ -1,0 +1,16 @@
+.myTab td {
+    font-size: 11px;
+    border: thin solid #444;
+    color: rgb(66, 134, 244);
+    padding: 4px 2px 0px 2px;
+  }
+  
+  .myTab th {
+    font-size: 11px;
+    border: thin solid #444;
+    color: rgb(120, 161, 228);
+    padding: 1px 2px 1px 2px;
+    text-align: center;
+    background-color: #333;
+  }
+  

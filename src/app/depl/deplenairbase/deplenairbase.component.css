@@ -1,0 +1,23 @@
+::ng-deep .mat-form-field-underline,
+::ng-deep .mat-form-field-ripple {
+  background-color: rgb(66, 134, 244) !important;
+  color: rgb(66, 134, 244) !important;
+}
+
+::ng-deep .mat-form-field-empty.mat-form-field-label {
+  color: rgb(66, 134, 244);
+}
+
+::ng-deep
+  .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label {
+  color: rgb(66, 134, 244);
+}
+
+.not-empty-select.mat-selected {
+  color: rgb(66, 134, 244) !important;
+}
+
+:host /deep/ .mat-select-value-text {
+  color: rgb(66, 134, 244) !important;
+}

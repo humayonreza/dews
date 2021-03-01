@@ -1,0 +1,340 @@
+<div class="row col-xs-12">
+  <div class="col-xs-4 panel-container">
+    <div class="panel-inner">
+      <div class="menu-border-bottom"><app-menu></app-menu></div>
+      <div>
+        <mat-vertical-stepper
+          [linear]="isLinear"
+          #stepper
+          style="background: transparent; color:#ddd;"
+        >
+        
+          <!-- Ser DeploymentId DeploymentDate ElementId lat lng isActive -->
+          <mat-step [stepControl]="" [completed]="false">
+            <ng-template matStepLabel
+              ><label class="txt-title">Deploy Unit</label></ng-template
+            >
+            <div style="margin-top: -20px;">
+              <form #d="ngForm" (ngSubmit)="submitDeploymentData(d.value)">
+                <div class="row">
+                  <div  class="col-md-6">
+                    <table width="100%">
+                      <tr>
+                        <td class="" style="padding-top: 20px;"><mat-radio-button
+                          value="optSelect"
+                          name="optSelect"
+                          (click)="deplType(1)"
+                        >Start Unit Deployment</mat-radio-button></td>
+                        
+                      </tr>
+                    </table>
+                  </div>
+                </div>  
+                <div class="row">           
+                  <div class="col-md-12">
+                    <mat-form-field style="width: 100%;">
+                      <input
+                        matInput
+                        placeholder="Ex Name"
+                        id="exName"
+                        [(ngModel)]="exName"
+                        name="exName"
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-form-field style="width: 100%;">
+                      <input
+                        matInput
+                        placeholder="Lattitude"
+                        id="uLat"
+                        [(ngModel)]="uLat"
+                        name="uLat"
+                      />
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xs-6">
+                    <mat-form-field style="width: 100%;">
+                      <input
+                        matInput
+                        placeholder="Longitude"
+                        id="uLng"
+                        [(ngModel)]="uLng"
+                        name="uLng"
+                      />
+                    </mat-form-field>
+                  </div>
+                  
+                </div>
+                
+  
+                <div> 
+                  <table width="100%">
+                    <tr>
+                      <td class="pull-left">
+                        <div class="outerBS pull-center">
+                          <button type="submit" class="btnSubmit">S</button>
+                        </div>
+                        <div class="txt9 pull-center">Submit</div>
+                      </td>
+                      <td class="txt10 pull-center">{{ backendResp_unitDepl }}</td>
+                      <td class="pull-right">
+                        <div class="outerBS pull-center">
+                          <button type="button" class="btnSubmit">R</button>
+                        </div>
+                        <div class="txt9 pull-center">Reset</div>
+                      </td>
+                    </tr>
+                  </table>
+                </div> 
+  
+              </form>
+            </div>
+            
+          </mat-step>
+          <mat-step [stepControl]="" [completed]="false">
+            <ng-template matStepLabel
+              ><label class="txt-title"
+                >Command Status for Subunit</label
+              ></ng-template
+            >
+            <div class="pull-center">
+              <form #c="ngForm" (ngSubmit)="submitComdStatus()">
+              <div>
+                <table width="100%" class="cmdStatus">
+                  <tr style="font-weight: bold;">
+                    <td>Subunt</td>
+                    <td>Integral</td>
+                    <td>Independent</td>
+                  </tr>
+                  <tr *ngFor="let data of arrCS">
+                    <td>{{ data.subunitName }}</td>
+                    <td>
+                      <mat-radio-button
+                        value="1"
+                        name="{{ data.ser }}"
+                        (click)="setSubunitCommandStatus(data.indepStateId)"
+                      ></mat-radio-button>
+                    </td>
+                    <td>
+                      <mat-radio-button
+                        value="1"
+                        name="{{ data.ser }}"
+                        (click)="setSubunitCommandStatus(data.integralStateId)"
+                      ></mat-radio-button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              
+              <!-- <div style="margin-top:10px;">
+                <table width="100%">
+                  <tr>
+                    <td class="pull-left"><button type="submit" class="btn btn-xs btn-default">Submit</button></td>
+                    <td class="txt10 pull-center">{{ backendResp_cmdstatus }}</td>
+                    <td class="pull-right"><button type="button" class="btn btn-xs btn-default">Reset</button></td>
+                  </tr>
+                </table>
+              </div> -->
+              <div style="margin-top:10px;"> 
+                <table width="100%">
+                  <tr>
+                    <td class="pull-left">
+                      <div class="outerBS pull-center">
+                        <button type="submit" class="btnSubmit">S</button>
+                      </div>
+                      <div class="txt9 pull-center">Submit</div>
+                    </td>
+                    <td class="txt10 pull-center">{{ backendResp_cmdstatus }}</td>
+                    <td class="pull-right">
+                      <div class="outerBS pull-center">
+                        <button type="button" class="btnSubmit">R</button>
+                      </div>
+                      <div class="txt9 pull-center">Reset</div>
+                    </td>
+                  </tr>
+                </table>
+              </div>   
+            </form>
+            </div>
+          </mat-step>
+          <!-- OP Deploy -->
+          <mat-step [stepControl]="" [completed]="false">
+            <ng-template matStepLabel
+              ><label class="txt-title">Deploy OP</label></ng-template
+            >
+            <div>
+            <form #o="ngForm" (ngSubmit)="submitOPDeploymentData(o.value)">
+              <div class="row">
+                <div  class="col-md-6">
+                  <table width="100%">
+                    <tr>
+                      <td style="padding-top: 20px;">
+                        <mat-radio-button
+                          value="optSelect"
+                          name="optSelect"
+                          [checked] = "opIsChecked"
+                          (click)="deplType(2)"
+                        >OP Deployment</mat-radio-button>
+                      </td>                    
+                    </tr>
+                  </table>
+                </div> 
+              </div>
+              <div *ngIf="deplOpt==2">
+              <div class="row">           
+                <div class="col-md-12">
+                  <mat-form-field style="width: 100%;">
+                    <mat-label>Select OP</mat-label>
+                    <mat-select [(ngModel)]="sectorName"  name="sectorName">
+                      <mat-option 
+                        *ngFor="let data of secNameArr"
+                        [value]="data.value"
+                      >
+                        {{ data.viewValue }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>              
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field style="width: 100%;">
+                    <input
+                      matInput
+                      placeholder="Lattitude"
+                      [(ngModel)]="opLat"
+                      name="opLat"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-xs-6">
+                  <mat-form-field style="width: 100%;">
+                    <input
+                      matInput
+                      placeholder="Longitude"
+                      [(ngModel)]="opLng"
+                      name="opLng"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field style="width: 100%;">
+                    <input
+                      matInput
+                      placeholder="Left Arc"
+                      [(ngModel)]="opLtArc"
+                      name="opLtArc"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-xs-6">
+                  <mat-form-field style="width: 100%;">
+                    <input
+                      matInput
+                      placeholder="Right Arc"
+                      [(ngModel)]="opRtArc"
+                      name="opRtArc"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+              
+              <div style="margin-top:10px;"> 
+                <table width="100%">
+                  <tr>
+                    <td class="pull-left">
+                      <div class="outerBS pull-center">
+                        <button type="submit" class="btnSubmit">S</button>
+                      </div>
+                      <div class="txt9 pull-center">Submit</div>
+                    </td>
+                    <td class="txt10 pull-center">{{ backendResp_opDepl }}</td>
+                    <td class="pull-right">
+                      <div class="outerBS pull-center">
+                        <button type="button" class="btnSubmit">R</button>
+                      </div>
+                      <div class="txt9 pull-center">Reset</div>
+                    </td>
+                  </tr>
+                </table>
+              </div>  
+            </div> 
+            </form>
+          </div>
+          </mat-step>
+        </mat-vertical-stepper>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-8 map-container">
+    <agm-map
+      [latitude]="latCen"
+      [longitude]="lngCen"
+      [zoom]="zoom"
+      [styles]="mapViewMode"
+      (mapClick)="getLocation($event)"
+      
+    >
+      <agm-circle
+          [latitude]="latCen"
+          [longitude]="lngCen"
+          [circleDraggable]="false"
+          [editable]="false"
+          [fillColor]=""
+          [fillOpacity]="0"
+          [radius]="900000"
+          [strokeOpacity]="0.1"
+          [strokePosition]="0"
+          [strokeWeight]="2"
+          [strokeColor]="'#fff'"
+          [clickable]="true"
+          (circleClick)="getLocation($event)"
+        ></agm-circle>
+      <agm-circle
+          *ngFor="let layout of deployedElement"
+          [latitude]="layout.lat"
+          [longitude]="layout.lng"
+          [circleDraggable]="false"
+          [editable]="false"
+          [fillColor]="layout.color"
+          [fillOpacity]="0"
+          [radius]="layout.rad"
+          [strokeOpacity]="0.4"
+          [strokePosition]="0"
+          [strokeWeight]="2"
+          [strokeColor]="layout.color"
+          [clickable]="true"
+          (circleClick)="getLocation($event)"
+        ></agm-circle>
+      <agm-marker
+          name="opList"
+          id="opList"
+          *ngFor="let layout of opList"
+          [latitude]="layout.lat"
+          [longitude]="layout.lng"
+          [label]="{ color: '#888', fontSize: '9px', text: layout.sName }"
+          [iconUrl]="{
+            url: '',
+            scaledSize: { height: 0, width: 0 }
+          }"
+          [visible]="true"
+        ></agm-marker>
+    </agm-map>
+  </div>
+</div>
+
+
+<!-- <div style="color:#444;">
+<input [(ngModel)]="baseId" type="text" name="baseId" />
+<input [(ngModel)]="subunitId1" type="text" name="subunitId1" />
+<input [(ngModel)]="subunitId2" type="text" name="subunitId2" />
+<input [(ngModel)]="subunitId3" type="text" name="subunitId3" />
+<input [(ngModel)]="scs1" type="text" name="scs1" />
+<input [(ngModel)]="scs2" type="text" name="scs2" />
+<input [(ngModel)]="scs3" type="text" name="scs3" />
+</div> -->
